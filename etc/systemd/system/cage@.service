@@ -22,7 +22,7 @@ After=getty@%i.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/cage -- /usr/bin/chromium --kiosk https://scottmadethis.net/
+ExecStart=/usr/bin/cage -- /usr/bin/chromium --kiosk http://localhost:8080/
 Restart=always
 User=pi
 # Log this user with utmp, letting it show up with commands 'w' and
