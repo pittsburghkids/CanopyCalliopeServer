@@ -4,6 +4,10 @@
 
 PioEncoder encoder(16);
 int encoderLastCount = 0;
+int encoderLastSend = 0;
+
+const int EncoderSendDelay = 250;
+const int EncoderSendMinimumDelta = 250;
 
 struct Switch
 {
@@ -33,7 +37,7 @@ Switch switches[] = {
     {15, ',', HIGH, HIGH, 0}};
 
 const int switchCount = sizeof(switches) / sizeof(switches[0]);
-const int debounceDelay = 50;
+const int DebounceDelay = 50;
 
 void setup()
 {
@@ -52,17 +56,25 @@ void setup()
 
 void loop()
 {
+  unsigned long currentTime = millis();
+
   // Encoder
 
-  if (encoder.getCount() != encoderLastCount)
+  if (currentTime - encoderLastSend > EncoderSendDelay)
   {
-    Serial.println(encoder.getCount());
-    encoderLastCount = encoder.getCount();
+    if (abs(encoder.getCount() - encoderLastCount) > EncoderSendMinimumDelta)
+    {
+      Serial.println(encoder.getCount());
+
+      Keyboard.write(' ');
+
+      encoderLastSend = currentTime;
+      encoderLastCount = encoder.getCount();
+    }
   }
 
   // Switches
 
-  unsigned long currentTime = millis();
   int pressCount = 0;
 
   for (int i = 0; i < switchCount; i++)
@@ -76,7 +88,7 @@ void loop()
     }
 
     // Check for debounce delay.
-    if ((currentTime - switches[i].debounceTime) > debounceDelay && newState != switches[i].state)
+    if ((currentTime - switches[i].debounceTime) > DebounceDelay && newState != switches[i].state)
     {
       switches[i].state = newState;
 
