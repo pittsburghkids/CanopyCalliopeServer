@@ -1,5 +1,9 @@
 #include <Arduino.h>
 #include <Keyboard.h>
+#include "pio_encoder.h"
+
+PioEncoder encoder(16);
+int encoderLastCount = 0;
 
 struct Switch
 {
@@ -42,10 +46,22 @@ void setup()
   {
     pinMode(switches[i].pin, INPUT_PULLUP);
   }
+
+  encoder.begin();
 }
 
 void loop()
 {
+  // Encoder
+
+  if (encoder.getCount() != encoderLastCount)
+  {
+    Serial.println(encoder.getCount());
+    encoderLastCount = encoder.getCount();
+  }
+
+  // Switches
+
   unsigned long currentTime = millis();
   int pressCount = 0;
 
