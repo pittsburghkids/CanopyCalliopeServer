@@ -12,7 +12,7 @@ sudo apt-get -y upgrade
 ## Install Software
 
 ```
-sudo apt-get -y install cage chromium xwayland nginx git
+sudo apt-get -y install cage chromium xwayland nginx git wlrctl
 sudo chmod +s /usr/bin/cage
 ```
 
