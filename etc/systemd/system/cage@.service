@@ -23,7 +23,7 @@ After=getty@%i.service
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/cage -s -- /usr/bin/chromium --kiosk http://localhost:8080/
+ExecStart=/home/pi/CanopyCalliopeServer/bin/start.sh
 Restart=always
 User=pi
 # Log this user with utmp, letting it show up with commands 'w' and
